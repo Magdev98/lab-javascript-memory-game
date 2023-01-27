@@ -26,6 +26,8 @@ const cards = [
 ];
 
 const memoryGame = new MemoryGame(cards);
+memoryGame.shuffleCards();
+console.log(memoryGame.shuffleCards())
 
 window.addEventListener('load', (event) => {
   let html = '';
@@ -45,7 +47,49 @@ window.addEventListener('load', (event) => {
   document.querySelectorAll('.card').forEach((card) => {
     card.addEventListener('click', () => {
       // TODO: write some code here
-      console.log(`Card clicked: ${card}`);
+    if(memoryGame.pickedCards.length === 2) {
+      return
+    }
+    console.log(`Card clicked: ${card}`);
+    // Add the card clicked to memoryGame.pickedCards array
+    // Check if pickedCards contains 2 elements
+    // If so, check if the two elements make a pair (else, keep going)
+    // If it's a pair : keep them face up. Else : turn them back
+    // Empty the pickedCards array (because it should never contain more than 2 elements (hint! use splice()))
+    // Check if the game is over (ie : if all pairs have been guessed)
+    memoryGame.pickedCards.push(card)
+    
+    card.classList.toggle('turned')
+
+    if(memoryGame.pickedCards.length === 2) {
+    let card1 = memoryGame.pickedCards[0].dataset.cardName
+    let card2 = memoryGame.pickedCards[1].dataset.cardName
+    
+    memoryGame.pairsClicked
+      if(memoryGame.checkIfPair(card1, card2)) {
+        memoryGame.pairsGuessed
+        memoryGame.pickedCards = []
+      } else {
+        setTimeout(() => {
+          memoryGame.pickedCards[0].classList.remove('turned')
+          memoryGame.pickedCards[1].classList.remove('turned')
+          memoryGame.pickedCards = []
+          }, 500);
+        } 
+    }
+
+    const scorePairClicked = document.getElementById('pairs-clicked')
+    const scorePairGuessed = document.getElementById('pairs-guessed')
+    scorePairClicked.textContent = memoryGame.pairsClicked
+    scorePairGuessed.textContent = memoryGame.pairsGuessed
+ 
+    if(memoryGame.checkIfFinished()){
+      window.alert("You won!")
+    }
+    
     });
+
   });
+
 });
+
